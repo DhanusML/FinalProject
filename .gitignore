@@ -2,6 +2,7 @@
 *
 
 # except
+!/presentation
 !.gitignore
 !*.tex
 !*.pdf

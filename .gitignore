@@ -1,0 +1,10 @@
+# ignore all files
+*
+
+# except
+!.gitignore
+!*.tex
+!*.pdf
+
+# ignore these files too
+presentation1.pdf

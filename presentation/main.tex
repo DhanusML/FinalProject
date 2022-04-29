@@ -1,8 +1,14 @@
 \documentclass{beamer}
-
+%\usetheme{Dresden}
+%\usecolortheme{crane}
+%\setbeamercolor{itemize item}{fg=darkred!80!black}
 %\usetheme{Berkeley}
-\usetheme{CambridgeUS}
+%\usetheme{CambridgeUS}
 %\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{JuanLesPins}
+\usetheme{Rochester}
+%\usetheme{Berlin}
 \input{/home/dhanus/Documents/latex-headers/header_presentation.tex}
 \title{Sparse Recovery}
 \author{Dhanus M Lal}
@@ -34,8 +40,8 @@
 		
 		\pause
 
-		\item Surprising result is that such a signal can be
-			recovered in $\mathcal{O}(\log n)$ measurements
+		\item Interesting result is that such a signal can be
+			recovered in $\mathcal{O}(\log n)$ measurements.
 	\end{itemize}
 
 \pause 
@@ -47,15 +53,15 @@
 \end{frame}
 
 
-\begin{frame}{Sparse Recovery Problem}
+\begin{frame}{Sparse recovery problem}
 	\begin{itemize}
-		\item Recover $x$ from linear measurement $y = Ax$ with
-			$x$ being $s$ -- sparse and $A\in \R^{m\times n}$ known.
+		\item Recover $s$--sparse signal $x$ from linear measurement
+			$y = Ax$, where $A\in \R^{m\times n}$ known.
 
 			\pause
 
-		\item Is there a measurement matrix $A\in\R^{m\times n}$
-			that makes recovery possible?
+		\item Are there measurement matrices $A\in\R^{m\times n}$
+			that make recovery possible?
 
 			\pause
 
@@ -79,7 +85,7 @@
 \end{frame}
 
 
-\begin{frame}{Basis Pursuit}
+\begin{frame}{Basis pursuit}
 	\begin{itemize}
 		\item If solution is unique, the following optimization problem
 			gives the actual signal.
@@ -102,7 +108,7 @@
 			\pause
 
 		\item This is a convex optimization problem called
-			basis pursuit, it is computationally
+			\textcolor{red}{basis pursuit}, it is computationally
 			efficient.
 
 			\pause
@@ -115,58 +121,67 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Recovery Using Random Matrices}
+
+\begin{frame}{Recovery using random matrices}{The class $\mathcal{A}$}
+	We will now sample measurement matrices from the class
+	$\mathcal{A}(m, n)$
 	\begin{definition}
-		$\mathcal{A}(m, n)$ is the class of random matrices with
+		$\mathcal{A}(m, n)$ is the class of random matrices in
+		$\R^{m\times n}$ with
 		isotropic, sub-gaussian, independent rows.
 	\end{definition}
 	
-	\pause
+\pause
+
+	A random vector $X\in\R^n$ is:
+	\begin{description}
+		\item[Isotropic] if $\E XX^T = I_n$
+			\pause
+		\item[Sub-gaussian] if the tail of $\ip{X}{x}$ decays
+			faster than some gaussian for any $x\in S^{n-1}$
+	\end{description}
+\end{frame}
+
+\begin{frame}{Recovery using random matrices}{expected $\ell_2$ error}
 	Several useful properties of $\mathcal{A}(m, n)$ are known.
 	
 	\pause
 
 	\begin{theorem}
-		If $A\in\mathcal{A}(m, n)$ and $E = A^{-1}(z)$,
-		then for any subset $T$ of $\R^n$,
+		Let $A\in\mathcal{A}(m, n)$, and 
+		let $E = \ker(A)$, then 
 		\[
-			\E\diam(T\cap E)\leq Cw(T)/\sqrt{m}
+			\E\diam(E\cap B_1^n)\leq C\sqrt{\frac{\log n}{m}}
 		\]
-		%\[
-		%	\E\sup_{x\in T} \abs{\pnorm{Ax}{2}-\sqrt{m}\pnorm{x}{2}}
-		%	\leq C\gamma(T)
-		%\]
 	\end{theorem}
 
 	\pause
 
-%	\begin{itemize}
-		 This can be used to get
-			\[
-				\E\pnorm{x - \hat{x}}{2}\leq C\sqrt{\frac{{s\log n}}
-				{{m}}}\pnorm{x}{2}
-			\]
-			
 
-%	\end{itemize}
+	This can be used to get
+		\[
+			\E\pnorm{x - \hat{x}}{2}\leq C\sqrt{\frac{{s\log n}}
+			{{m}}}\pnorm{x}{2}
+		\]
+
 \end{frame}
 
-\begin{frame}{Exact Recovery for $A\in\mathcal{A}$}
+\begin{frame}{Exact recovery for $A\in\mathcal{A}$}
 	Another property of matrices in $\mathcal{A}$.
 	\begin{theorem}
-		If $A\in\mathcal{A}(m, n)$ with $m\geq Cw(T)^2$, for
-		$T\subset S^{n-1}$, then $T\cap \ker(A) = \emptyset$
-		with high probability ($\geq 1-2\exp(-cm)$)
+		If $A\in\mathcal{A}(m, n)$ with \textcolor{red}{$m\geq cs\log n$}, then
+		$\ker(A) \cap S^{n-1} \cap 2\sqrt{s}B_1^n$ is empty
+		with probability at least $1-2\exp(-cm)$.
 	\end{theorem}
 
 	\pause
 
 	\begin{itemize}
 		\item From theorem, $\hat{x} = x$ with high
-			probability provided $m>Cs\log n$.
+			probability provided $m \geq cs\log n$.
 
 		\item Because, if $h = \hat{x}-x\neq 0$, then
-			$h/\pnorm{h}{2}\in S^{n-1}\cap 2\sqrt{s}B_1^n$, which
+			$h/\pnorm{h}{2}\in \ker(A)\cap S^{n-1}\cap 2\sqrt{s}B_1^n$, which
 			is empty with high probability.
 
 			\pause
@@ -176,9 +191,10 @@
 \end{frame}
 
 
-\begin{frame}{RIP Implies Exact Recovery}
+\begin{frame}{RIP implies exact recovery}
 	\begin{definition}[RIP]
-		A matrix $A$ satisfies \mbox{RIP} with parameter $s$
+		A matrix $A$ satisfies \textcolor{red}
+		{Restricted Isometry Property} with parameter $s$
 		if the following holds for every $3s$--sparse vectors:
 		\[
 			0.9\pnorm{x}{2}\leq \pnorm{Ax}{2}\leq 1.1\pnorm{x}{2}
@@ -200,29 +216,45 @@
 
 		\item Surprisingly, $A\in\mathcal{A}(m, n)$
 			satisfies \mbox{RIP}
-			if $m>Cs\log n$ with high probability
+			if $m\geq cs\log n$ with high probability
 			($\geq 1-2\exp(-cm))$.
-
-		\item Alternate proof of the previous result.
 
 	\end{itemize}
 			
 \end{frame}
 	
-\begin{frame}{Further Reading}
+\begin{frame}{Summary}
 	\begin{itemize}
-		\item Recovery of sparse signal using partial Fourier
-			coefficients.
-	
-			\vspace{10mm}
-			\pause
-
-		\item Low rank matrix recovery
+		\item Goal: to recover sparse signal with small number of
+			measurements.
 
 			\vspace{10mm}
 			\pause
 
-		\item Numerical simulations.
+		\item Basis pursuit can recover sparse signal under some
+			conditions.
+
+			\vspace{10mm}
+			\pause
+
+		\item Number of measurements depend linearly on sparsity
+			and logarithmically on the dimension.
 	\end{itemize}
 \end{frame}
+
+
+\begin{frame}{References}
+\begin{thebibliography}{10}
+\bibitem{hdpBook}
+\alert{R. Vershynin}
+\newblock  {High Dimensional Probability}
+%\newblock {\em Studia Math.103. (1992), 329-333}.
+
+\bibitem{tao}
+\alert{T. Tao}
+\newblock {Compressed Sensing: robust recovery of sparse signals from limited measurements}
+%\newblock {\em Hokkaido Math. J., 21(2): 251-258, 1992}.
+\end{thebibliography}
+\end{frame}
+
 \end{document}

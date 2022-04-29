@@ -3,6 +3,8 @@
 
 # except
 !/presentation
+!/report
+!script_presentation
 !.gitignore
 !*.tex
 !*.pdf

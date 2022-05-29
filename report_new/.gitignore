@@ -1,0 +1,13 @@
+# ignore all files
+*
+
+# except these files
+!.gitignore
+!*.tex
+!*.pdf
+!*.bib
+!newfile
+
+# ignore draft.pdf too
+draft*
+dhanus_report_final.pdf

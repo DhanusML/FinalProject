@@ -4,6 +4,7 @@
 # except
 !/presentation
 !/report
+!/report_new
 !script_presentation
 !.gitignore
 !*.tex
